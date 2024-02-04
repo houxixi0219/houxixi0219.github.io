@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #scroll-wrapper {
+      width: 80%;
+      margin: 20px auto;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      height: 50px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    #street-container {
+      white-space: nowrap;
+      position: absolute;
+      animation: scrollAnimation 30s linear infinite;
+    }
+
+    .street {
+      display: inline-block;
+      width: 100px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      font-size: 16px;
+      border-right: 1px solid #fff;
+    }
+
+    .red-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes scrollAnimation {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(calc(-100px * 500)); /* Adjusted based on street width and count */
+      }
+    }
+
+    #control-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const streets = Array.from({ length: 500 }, (_, index) => `Street ${index + 1}`);
+      const streetContainer = document.getElementById('street-container');
+      const redDot = document.createElement('div');
+      redDot.className = 'red-dot';
+      streetContainer.parentElement.appendChild(redDot);
+
+      streets.forEach(street => {
+        const streetElement = document.createElement('div');
+        streetElement.className = 'street';
+        streetElement.textContent = street;
+        streetContainer.appendChild(streetElement);
+      });
+
+      const createButton = (text, action) => {
+        const button = document.createElement('button');
+        button.textContent = text;
+        button.addEventListener('click', action);
+        return button;
+      };
+
+      const pauseBtn = createButton('暂停', () => {
+        streetContainer.style.animationPlayState = 'paused';
+      });
+      const resumeBtn = createButton('继续', () => {
+        streetContainer.style.animationPlayState = 'running';
+      });
+
+      const buttonContainer = document.getElementById('control-buttons');
+      buttonContainer.append(pauseBtn, resumeBtn);
+    });
+  </script>
+</head>
+<body>
+  <div id="scroll-wrapper">
+    <div id="street-container"></div>
+  </div>
+  <div id="control-buttons"></div>
+</body>
+</html>

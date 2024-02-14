@@ -12,6 +12,8 @@
       position: relative;
       overflow: hidden;
       border: 1px solid #ccc;
+      border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
     .street-container {
@@ -19,6 +21,9 @@
       display: inline-block;
       animation: scrollAnimation 0.3s linear infinite;
       position: relative;
+      border-radius: 15px;
+    overflow: hidden;
+    transition-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1); /* 使用贝塞尔曲线调整滚动平滑度 */
     }
 
     .street {
@@ -31,9 +36,18 @@
       border-right: 1px solid #fff;
       padding: 0 10px; /* 添加 padding 以防止重叠 */
       overflow: hidden; /* 添加溢出隐藏以处理较长的街道名称 */
+      border-radius: 15px;
+    background: linear-gradient(to bottom, #ffffff, #f5f5f5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* 避免换行 */
     }
 
-    
+    .street:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
 
     .reddot {
       position: absolute;
@@ -44,9 +58,8 @@
       top: calc(50% - 5px); /* 居中 */
       left: 50%; /* 居中 */
       transform: translateX(-50%); /* 居中 */
+      z-index: 1; /* 确保红点始终在上方 */
     }
-
-
 
 
     @keyframes scrollAnimation {
@@ -54,9 +67,10 @@
         transform: translateX(0);
       }
       100% {
-        transform: translateX(-100%);
+        transform: translateX(calc(-100% + 100px)); /* 调整偏移量以避免最后一个元素被隐藏 */
       }
     }
+
 
     .control-buttons {
       display: flex;
@@ -74,6 +88,12 @@
     h1 {
       text-align: center;
     }
+
+     /* 新增样式 */
+     .highlight {
+      background-color: red !important;
+    }
+
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -525,16 +545,26 @@
 
         // 添加暂停和继续按钮
         const pauseBtn = document.createElement('button');
-        pauseBtn.textContent = '暂停';
-        pauseBtn.addEventListener('click', () => {
-          streetContainer.style.animationPlayState = 'paused';
-        });
+      pauseBtn.textContent = '暂停';
+      pauseBtn.addEventListener('click', () => {
+        const streets = document.querySelectorAll('.street');
+        const currentStreet = document.querySelector('.highlight');
+        if (currentStreet) {
+          currentStreet.classList.remove('highlight');
+          let nextStreet = currentStreet.nextElementSibling;
+          if (!nextStreet) {
+            nextStreet = streets[0];
+          }
+          nextStreet.classList.add('highlight');
+        }
+        streetContainer.style.animationPlayState = 'paused';
+      });
 
-        const resumeBtn = document.createElement('button');
-        resumeBtn.textContent = '继续';
-        resumeBtn.addEventListener('click', () => {
-          streetContainer.style.animationPlayState = 'running';
-        });
+      const resumeBtn = document.createElement('button');
+      resumeBtn.textContent = '继续';
+      resumeBtn.addEventListener('click', () => {
+        streetContainer.style.animationPlayState = 'running';
+      });
 
         const controlButtons = document.createElement('div');
         controlButtons.className = 'control-buttons';

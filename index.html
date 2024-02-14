@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>环卫处抽签表</title>
   <style>
-    #scroll-wrapper {
+    /* 保持原始样式不变 */
+    .scroll-wrapper {
       width: 80%;
       margin: 20px auto;
+      position: relative;
       overflow: hidden;
       border: 1px solid #ccc;
-      height: 50px;
-      position: relative;
-      display: flex;
-      align-items: center;
     }
 
-    #street-container {
+    .street-container {
       white-space: nowrap;
-      position: absolute;
-      animation: scrollAnimation 30s linear infinite;
+      display: inline-block;
+      animation: scrollAnimation 0.3s linear infinite;
+      position: relative;
     }
 
     .street {
@@ -29,79 +29,715 @@
       text-align: center;
       font-size: 16px;
       border-right: 1px solid #fff;
+      padding: 0 10px; /* 添加 padding 以防止重叠 */
+      overflow: hidden; /* 添加溢出隐藏以处理较长的街道名称 */
     }
 
-    .red-dot {
+    
+
+    .reddot {
       position: absolute;
       width: 10px;
       height: 10px;
       background-color: red;
       border-radius: 50%;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      top: calc(50% - 5px); /* 居中 */
+      left: 50%; /* 居中 */
+      transform: translateX(-50%); /* 居中 */
     }
+
+
+
 
     @keyframes scrollAnimation {
-      from {
+      0% {
         transform: translateX(0);
       }
-      to {
-        transform: translateX(calc(-100px * 500)); /* Adjusted based on street width and count */
+      100% {
+        transform: translateX(-100%);
       }
     }
 
-    #control-buttons {
+    .control-buttons {
       display: flex;
       justify-content: center;
       margin-top: 10px;
     }
 
-    button {
+    .control-buttons button {
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
       margin-right: 10px;
     }
+
+    h1 {
+      text-align: center;
+    }
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const streets = Array.from({ length: 500 }, (_, index) => `Street ${index + 1}`);
-      const streetContainer = document.getElementById('street-container');
-      const redDot = document.createElement('div');
-      redDot.className = 'red-dot';
-      streetContainer.parentElement.appendChild(redDot);
+      const streets1 = [
+        "解放西路",
+        "凌西大街",
+        "市府西路",
+        "吉祥街",
+        "滨河路",
+        "学苑路",
+        "科技西路",
+        "天津街",
+        "长春街"
+      ];
 
-      streets.forEach(street => {
-        const streetElement = document.createElement('div');
-        streetElement.className = 'street';
-        streetElement.textContent = street;
-        streetContainer.appendChild(streetElement);
-      });
+      const streets2 = [
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+        "机场路",
+        "锦兴路",
+      ];
 
-      const createButton = (text, action) => {
-        const button = document.createElement('button');
-        button.textContent = text;
-        button.addEventListener('click', action);
-        return button;
+      const streets3 = [
+        "太平街",
+        "太和街",
+        "董正街",
+        "凌川西路",
+        "锦义路",
+        "工农街",
+        "新疆街",
+        "新民南街",
+        "平康路",
+        "富阳路",
+        "锦凌路",
+        "南康路",
+        "华宇新城路",
+        "机场南路2",
+        "新民北街",
+        "制药厂路",
+        "花园街",
+        "锦铁步行桥",
+      ];
+
+      const trashes1 = [
+        "新民南街三岔路",
+        "局东侧",
+        "森淼家园",
+        "新疆街",
+        "科技西路头",
+        "科技西路",
+        "市府路五粮液",
+        "洛城体育",
+        "振兴屯小木屋",
+        "车队对面",
+        "机场路",
+        "锦华厂蛋糕心语东侧"
+      ];
+
+      const streets4 = [
+        "中央大街",
+        "中央大街天桥1",
+        "中央大街天桥2",
+        "解放路",
+        "解放路天桥",
+        "南京路",
+        "延安路",
+        "上海路",
+        "洛阳路",
+        "北京路",
+        "云飞街",
+        "广州街",
+        "重庆路",
+        "和平路",
+        "松坡路",
+        "东联路",
+        "徐州街",
+        "利民街",
+        "锦义街"
+      ];
+
+      const streets5 = [
+        "丹东街",
+        "山东街",
+        "紫明街",
+        "矿山街",
+        "卫东街",
+        "贵州街",
+        "肇东街",
+        "宜昌路",
+        "南宁路",
+        "北安路",
+        "中央北街",
+        "朝阳路",
+        "北宁路",
+        "爱民街",
+        "杭州街",
+        "郑州街",
+        "湖北路",
+      ];
+
+      const streets6 = [
+        "厚生街",
+        "吴淞街",
+        "延安东路",
+        "明德街",
+        "安达街",
+        "广东街",
+        "北镇路",
+        "向阳街",
+        "靖东街",
+        "印染南街",
+        "重庆东路",
+        "矿山北街",
+        "昆明路",
+        "幸福街",
+        "南京东路",
+        "泉州街",
+        "邓州街",
+        "云飞桥下",
+        "肇东南街",
+        "春晖街",
+        "安居路",
+        "紫东街",
+        "临夏路",
+        "环堤路",
+        "南阳路",
+        "富贵街",
+        "丹东街",
+        "山东街",
+        "吉庆南街",
+        "兴宁路",
+        "安仁街",
+        "吉庆北街1",
+        "吉庆北街2",
+        "永泰街",
+        "榴花东街",
+        "七六八街",
+        "锦铁一街",
+        "锦铁二街",
+        "锦铁三街",
+        "锦铁四街",
+        "北川路",
+        "爱民北街",
+        "惠东街",
+        "新制东街",
+        "新制中街",
+        "新制西街",
+        "衡阳路",
+        "八一公园东街",
+        "安富东街",
+        "启东街",
+        "龙江东街",
+        "龙江西街",
+        "龙江中街",
+        "牡丹一路",
+        "牡丹二路",
+        "牡丹三路",
+        "牡丹四路",
+        "龙江一路",
+        "龙江二路",
+        "龙江三路"
+      ];
+
+      const box1 = [
+        "丹东街解放路以北",
+        "延安东路老职校1-6",
+        "延安东路老职校7、10",
+        "延安东路老职校8、9",
+        "延安东路老职校11",
+        "东联路凌河公安分局",
+        "安居育英小学",
+        "金屯1-5",
+        "金屯6-11",
+        "东联路百股1、2",
+        "东联路百股3-6",
+        "百股街东盛花园",
+        "四海检车线1、2",
+        "北美佳苑、清真屠宰场小道"
+      ];
+
+      const trashes2 = [
+        "吉庆北街将军苑对面4",
+        "山东街与上海路交口4",
+        "和平路与吉庆北街交口4",
+        "吴淞街洗浴门前8",
+        "延安路公厕3",
+        "富贵街（凌河区政府西门）4",
+        "肇东街东（菊花苑门前）4",
+        "南阳路菊园派出所6",
+        "延安路与紫明街交叉口东侧5",
+        "上海路瑞盛家园对面4"
+      ];
+
+      const streets7 = [
+        "解放路",
+        "解放路天桥",
+        "中央大街",
+        "中央大街天桥",
+        "南京路",
+        "人民街",
+        "上海路",
+        "延安路",
+        "北京路",
+        "洛阳路",
+        "士英街",
+        "士英南街",
+        "锦朝街",
+        "松坡路",
+        "重庆路",
+        "和平路",
+        "重观路"
+      ];
+
+      const streets8 = [
+        "南宁路",
+        "锦华街",
+        "广西街",
+        "锦西街1",
+        "锦西街2",
+        "南街",
+        "东街",
+        "北街",
+        "汉口街1",
+        "汉口街2",
+        "宜昌路",
+        "山西北街",
+        "山西南街",
+        "滨河路"
+      ];
+
+      const streets9 = [
+        "四合街",
+        "站四小学路",
+        "歌厅一路",
+        "歌厅二路",
+        "歌厅三路",
+        "民族街",
+        "三保路",
+        "民族一路",
+        "民族二路",
+        "电信路",
+        "永宁巷",
+        "吴半仙胡同",
+        "建行西胡同",
+        "微利粗粮胡同",
+        "胖大妈胡同",
+        "设计院胡同",
+        "枢纽西胡同",
+        "安顺街",
+        "怀英路",
+        "怀英北路",
+        "十中南胡同",
+        "西喜路",
+        "二热街",
+        "福安巷",
+        "凌水巷",
+        "牛心胡同",
+        "兴安街",
+        "平安胡同",
+        "长安后胡同",
+        "同乐胡同",
+        "保安街",
+        "加油站东路",
+        "石油能源街",
+        "和平西路",
+        "天安西巷",
+        "天安二级站门前",
+        "福州街步行桥",
+        "大厦通道",
+        "北一小学东街",
+        "北一小学西街",
+        "南街派出所路",
+        "渝乡人家胡同",
+        "北宁路",
+        "海景装饰胡同",
+        "基督教东胡同",
+        "青苹果学校北胡同",
+        "石油东街1",
+        "石油西街",
+        "红星街",
+        "红旗路",
+        "绥北路",
+        "中环西路",
+        "安阳街",
+        "金源路",
+        "北安路",
+        "林西街",
+        "西安街1",
+        "西安街2",
+        "江西街",
+        "阜康路",
+        "胜昔路",
+        "石油东街2",
+        "阳光街",
+        "北川路",
+        "晟丽花园路",
+        "石油宾馆北墙外路"
+      ];
+
+      const trashes3 = [
+        "航星门前",
+        "锦朝路沿线1-4",
+        "锦朝路沿线5-7",
+        "锦朝路沿线8-11",
+        "锦朝路沿12-14",
+        "西喜路",
+        "二热电",
+        "重观路",
+        "河夹信子",
+        "观音洞游泳馆",
+        "人民街白老户村",
+        "防化连",
+        "蓬莱早市"
+      ];
+
+      const streets10 = [
+        "中央南街",
+        "云飞南街",
+        "女儿河桥",
+        "市府路",
+        "科技路",
+        "凌川路",
+        "福州街",
+        "成都街",
+        "实验学校地下通道",
+        "滨河路二期及匝道",
+        "滨河路三期",
+        "滨河路四期",
+        "渤海大道",
+        "东海大街",
+        "泰山路",
+        "黄海大街",
+        "中山路",
+        "嵩山路"
+      ];
+
+      const streets11 = [
+        "昆明街",
+        "光彩路",
+        "锦南路",
+        "吉祥街",
+        "锦兴路",
+        "学苑路",
+        "武汉街",
+        "市府东路",
+        "科技东路",
+        "回纹街"
+      ];
+
+      const streets12 = [
+        "湛江街",
+        "云飞桥下路",
+        "博学路",
+        "河口巷",
+        "凌川东路",
+        "广元路",
+        "凌川东一街",
+        "凌川东二街",
+        "凌川东三街",
+        "凌川东四街",
+        "湛江街",
+        "云飞桥下路",
+        "博学路",
+        "河口巷",
+        "凌川东路",
+        "广元路",
+        "凌川东一街",
+        "凌川东二街",
+        "凌川东三街",
+        "凌川东四街",
+        "南安街",
+        "女儿河北路",
+        "中医南路",
+        "武汉西一街",
+        "武汉西二街",
+        "区政府南路",
+        "消防队北路",
+        "劳动局西街",
+        "转角巷",
+        "南广路",
+        "锦娘路",
+        "长沙街",
+        "吉祥南街",
+        "锦水街",
+        "刘屯巷",
+        "南康路",
+        "学院路",
+        "南通街",
+        "中央南西一街"
+      ];
+
+      const trashes4 = [
+        "市府路行政大厅门前",
+        "昆明街29号楼",
+        "昆明街31号楼",
+        "昆明街综合执法局门口",
+        "昆明街37号楼",
+        "市府路信访局门口",
+        "市府路国税局门口",
+        "市府路中医院北门东侧",
+        "吉祥南街渤大雅居东门"
+      ];
+
+      const arm1 = [
+        "凌川路",
+        "滨河园小区",
+        "市府东路",
+        "凌川东路",
+        "吉祥南街",
+        "吉祥街",
+        "福州街",
+        "科技路",
+        "昆明街"
+      ]
+
+      // 创建街道选择器函数
+      const createStreetPicker = (containerId, streets) => {
+        const streetContainer = document.getElementById(containerId);
+
+        // 创建街道
+        streets.forEach(street => {
+          const streetElement = document.createElement('div');
+          streetElement.className = 'street';
+          streetElement.textContent = street;
+          streetContainer.appendChild(streetElement);
+        });
+
+        streets.forEach(street => {
+          const streetElement = document.createElement('div');
+          streetElement.className = 'street';
+          streetElement.textContent = street;
+          streetContainer.appendChild(streetElement);
+        });
+
+        // 创建红点并放置在抽签框上方
+        const redDot = document.createElement('div');
+        redDot.className = 'red-dot';
+        streetContainer.appendChild(redDot);
+
+        // 添加暂停和继续按钮
+        const pauseBtn = document.createElement('button');
+        pauseBtn.textContent = '暂停';
+        pauseBtn.addEventListener('click', () => {
+          streetContainer.style.animationPlayState = 'paused';
+        });
+
+        const resumeBtn = document.createElement('button');
+        resumeBtn.textContent = '继续';
+        resumeBtn.addEventListener('click', () => {
+          streetContainer.style.animationPlayState = 'running';
+        });
+
+        const controlButtons = document.createElement('div');
+        controlButtons.className = 'control-buttons';
+        controlButtons.appendChild(pauseBtn);
+        controlButtons.appendChild(resumeBtn);
+        streetContainer.parentElement.appendChild(controlButtons);
+
+        // 动态调整街道宽度
+        adjustStreetWidth(streetContainer);
       };
 
-      const pauseBtn = createButton('暂停', () => {
-        streetContainer.style.animationPlayState = 'paused';
-      });
-      const resumeBtn = createButton('继续', () => {
-        streetContainer.style.animationPlayState = 'running';
-      });
+      // 动态调整街道宽度的函数
+      const adjustStreetWidth = (container) => {
+        const streets = container.querySelectorAll('.street');
+        streets.forEach(street => {
+          street.style.width = street.scrollWidth + 'px';
+        });
+      };
 
-      const buttonContainer = document.getElementById('control-buttons');
-      buttonContainer.append(pauseBtn, resumeBtn);
+      // 创建第一个抽签框和按钮
+      createStreetPicker('street-container-1', streets1);
+
+      // 创建第二个抽签框和按钮
+      createStreetPicker('street-container-2', streets2);
+
+      // 创建第三个抽签框和按钮
+      createStreetPicker('street-container-3', streets3);
+
+      // 创建第四个抽签框和按钮
+      createStreetPicker('trash-container-1', trashes1);
+
+      // 创建第五个抽签框和按钮
+      createStreetPicker('street-container-4', streets4);
+
+      // 创建第六个抽签框和按钮
+      createStreetPicker('street-container-5', streets5);
+
+      // 创建第七个抽签框和按钮
+      createStreetPicker('street-container-6', streets6);
+
+      // 创建第八个抽签框和按钮
+      createStreetPicker('box-container-1', box1);
+
+      // 创建第九个抽签框和按钮
+      createStreetPicker('trash-container-2', trashes2);
+
+      // 创建第十个抽签框和按钮
+      createStreetPicker('street-container-7', streets7);
+
+      // 创建第十一个抽签框和按钮
+      createStreetPicker('street-container-8', streets8);
+
+      // 创建第十二个抽签框和按钮
+      createStreetPicker('street-container-9', streets9);
+
+      // 创建第十三个抽签框和按钮
+      createStreetPicker('trash-container-3', trashes3);
+
+      // 创建第十四个抽签框和按钮
+      createStreetPicker('street-container-10', streets10);
+
+      // 创建第十五个抽签框和按钮
+      createStreetPicker('street-container-11', streets11);
+
+      // 创建第十六个抽签框和按钮
+      createStreetPicker('street-container-12', streets12);
+
+      // 创建第十七个抽签框和按钮
+      createStreetPicker('trash-container-4', trashes4);
+
+      // 创建第十八个抽签框和按钮
+      createStreetPicker('arm-container-1', arm1);
     });
   </script>
 </head>
 <body>
-  <div id="scroll-wrapper">
-    <div id="street-container"></div>
+
+  <!-- 第一个抽签框 -->
+  <h1>太和区一级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-1" class="street-container"></div>
   </div>
-  <div id="control-buttons"></div>
+
+  <!-- 第二个抽签框 -->
+  <h1>太和区二级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-2" class="street-container"></div>
+  </div>
+
+  <!-- 第三个抽签框 -->
+  <h1>太和区三级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-3" class="street-container"></div>
+  </div>
+
+  <!-- 第四个抽签框 -->
+  <h1>太和区垃圾分类站点位明细</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="trash-container-1" class="street-container"></div>
+  </div>
+
+  <!-- 第五个抽签框 -->
+  <h1>凌河区一级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-4" class="street-container"></div>
+  </div>
+
+  <!-- 第六个抽签框 -->
+  <h1>凌河区二级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-5" class="street-container"></div>
+  </div>
+
+  <!-- 第七个抽签框 -->
+  <h1>凌河区三级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-6" class="street-container"></div>
+  </div>
+
+  <!-- 第八个抽签框 -->
+  <h1>凌河区白钢箱点位明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="box-container-1" class="street-container"></div>
+  </div>
+
+  <!-- 第九个抽签框 -->
+  <h1>凌河区垃圾桶点位明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="trash-container-2" class="street-container"></div>
+  </div>
+
+  <!-- 第十个抽签框 -->
+  <h1>古塔区一级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-7" class="street-container"></div>
+  </div>
+
+  <!-- 第十一个抽签框 -->
+  <h1>古塔区二级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-8" class="street-container"></div>
+  </div>
+
+  <!-- 第十二个抽签框 -->
+  <h1>古塔区三级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-9" class="street-container"></div>
+  </div>
+
+  <!-- 第十三个抽签框 -->
+  <h1>古塔区垃圾分类站点位明细</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="trash-container-3" class="street-container"></div>
+  </div>
+
+  <!-- 第十四个抽签框 -->
+  <h1>高新区一级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-10" class="street-container"></div>
+  </div>
+
+  <!-- 第十五个抽签框 -->
+  <h1>高新区二级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-11" class="street-container"></div>
+  </div>
+
+  <!-- 第十六个抽签框 -->
+  <h1>高新区三级道路明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="street-container-12" class="street-container"></div>
+  </div>
+
+  <!-- 第十七个抽签框 -->
+  <h1>高新区垃圾桶点位明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="trash-container-4" class="street-container"></div>
+  </div>
+
+  <!-- 第十八个抽签框 -->
+  <h1>高新区勾臂箱点位明细表</h1>
+  <div class="scroll-wrapper">
+    <div class="reddot"></div>
+    <div id="arm-container-1" class="street-container"></div>
+  </div>
+
+  
 </body>
 </html>
